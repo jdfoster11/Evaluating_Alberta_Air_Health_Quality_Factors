@@ -1,0 +1,64 @@
+---
+title: "604 Group Project Regression"
+author: "Jeff Foster"
+date: "2024-11-12"
+output: html_document
+---
+
+```{r,echo=FALSE}
+install.packages("leaps")
+install.packages("olsrr")
+install.packages("GGally")
+library(olsrr)
+```
+
+```{r}
+air_quality_master <- read.csv("masterdata_JF.csv")
+head(air_quality_master)
+```
+
+
+```{r}
+full_model_air_quality_master <- lm(Life.Expectancy..Years. ~ CSD + Period + TOTAL.POPULATION + Adjusted_AQHI + Oil.Wells..Count. + Natural.Gas.Production..m.3. + CH4.Equivalent..t. + CO2.Equivalent..t. + N2O.Equivalent..t. + Oats..Count. + Canola..Count. + Barley..Count. + Durum.Wheat..Count. + Non.Durum.Wheat..Count. + Other.Crops..Count. + Cattle.and.Calves..Count. + Pigs..Count. + Dwelling.Units..Count. + Residence.Housing.Starts..Count. + Vehicle.Registration..Count. + Fire.Size..Hectares. + Fires..Count., data = air_quality_master)
+summary(full_model_air_quality_master)
+```
+
+```{r}
+stepmod_1=ols_step_both_p(full_model_air_quality_master, p_enter = 0.1, p_remove = 0.3, details = TRUE)
+```
+
+```{r}
+summary(stepmod_1$model)
+```
+
+```{r}
+stepmod_2=ols_step_both_p(full_model_air_quality_master, p_enter = 0.64, p_remove = 0.9, details = TRUE)
+```
+
+```{r}
+summary(stepmod_2$model)
+```
+```{r}
+model_2 <- lm(Adjusted_AQHI ~ Other.Crops..Count. + Residence.Housing.Starts..Count., data = air_quality_master)
+summary(model_2)
+```
+
+
+```{r}
+stepmod_3=ols_step_both_p(full_model_air_quality_master, p_enter = 0.65, p_remove = 0.9, details = TRUE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
